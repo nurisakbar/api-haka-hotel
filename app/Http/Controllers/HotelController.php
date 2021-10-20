@@ -16,14 +16,20 @@ class HotelController extends Controller
     public function index(Request $request)
     {
         $hotel = Hotel::with('district');
+        $paginate = 10;
         if ($request->has('name')) {
             $hotel->where('name', 'like', "%".$request->name."%");
+            $hotel->orWhere('address_tag', 'like', "%".$request->name."%");
         }
 
         if ($request->has('district')) {
             $hotel->where('district_id', $request->district);
         }
-        return HotelResource::collection($hotel->get());
+
+        if ($request->has('paginate')) {
+            $paginate = $request->paginate;
+        }
+        return HotelResource::collection($hotel->paginate($paginate));
     }
 
     /**
@@ -45,7 +51,8 @@ class HotelController extends Controller
      */
     public function show($id)
     {
-        //
+        $hotel = Hotel::with('district')->findOrFail($id);
+        return new HotelResource($hotel);
     }
 
     /**
@@ -68,6 +75,7 @@ class HotelController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $hotel = Hotel::findOrFail($id);
+        return response()->json(['message'=>'Delete Success','success'=>true], 200);
     }
 }

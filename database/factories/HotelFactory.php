@@ -28,7 +28,7 @@ class HotelFactory extends Factory
         return [
             'name'          =>  'Hotel '.$this->faker->sentence($nbWords = 4, $variableNbWords = true),
             'address'       =>  $this->faker->address(),
-            'address_tag'   =>  serialize($this->faker->words($nb = 3, $asText = false)),
+            'address_tag'   =>  implode(',', $this->faker->words($nb = 3, $asText = false)),
             'district_id'   =>  $district->id,
             'photos'        =>  serialize($photos)
         ];

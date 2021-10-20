@@ -15,11 +15,12 @@ class HotelResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'name'=>$this->name,
-            'address'=>$this->address,
-            'address_tag' =>unserialize($this->address_tag),
-            'photos'=>unserialize($this->photos),
-            'districts' =>$this->district,
+            'id'            =>  $this->id,
+            'name'          =>  $this->name,
+            'address'       =>  $this->address,
+            'address_tag'   =>  explode(',', $this->address_tag),
+            'photos'        =>  unserialize($this->photos),
+            'districts'     =>  $this->district,
         ];
     }
 }
