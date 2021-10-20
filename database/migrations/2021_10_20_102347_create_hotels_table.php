@@ -18,7 +18,7 @@ class CreateHotelsTable extends Migration
             $table->string('name');
             $table->string('address');
             $table->string('address_tag');
-            $table->string('district_id');
+            $table->string('regency_id');
             $table->text('photos');
             $table->timestamps();
         });

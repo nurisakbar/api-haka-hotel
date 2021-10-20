@@ -15,7 +15,7 @@ class HotelController extends Controller
      */
     public function index(Request $request)
     {
-        $hotel = Hotel::with('district');
+        $hotel = Hotel::with('regency');
         $paginate = 10;
         if ($request->has('name')) {
             $hotel->where('name', 'like', "%".$request->name."%");
@@ -51,7 +51,7 @@ class HotelController extends Controller
      */
     public function show($id)
     {
-        $hotel = Hotel::with('district')->findOrFail($id);
+        $hotel = Hotel::with('regency', 'hotelFacility.facility')->findOrFail($id);
         return new HotelResource($hotel);
     }
 
