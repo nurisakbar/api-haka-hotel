@@ -4,14 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\District;
 
-class Hotel extends Model
+class District extends Model
 {
     use HasFactory;
-
-    public function district()
-    {
-        return $this->belongsTo(District::class);
-    }
 }
