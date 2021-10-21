@@ -9,6 +9,7 @@ use App\Models\District;
 class Hotel extends Model
 {
     use HasFactory;
+    protected $fillable = ['name', 'address', 'address_tag', 'district_id', 'photos'];
 
     public function district()
     {
