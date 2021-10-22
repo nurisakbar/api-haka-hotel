@@ -6,7 +6,7 @@ use App\Models\Banner;
 use Illuminate\Http\Request;
 use App\Http\Resources\BannerResource;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Facades\Validator;
+use App\Http\Requests\BannerStoreRequest;
 
 class BannerController extends Controller
 {
@@ -31,19 +31,8 @@ class BannerController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(BannerStoreRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            'name'        => 'required',
-            'image'       => 'required',
-            'publish'     => 'required',
-            'description' => 'required',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 400);
-        }
-
         $stored = Banner::create([
             'name' => $request->name,
             'image' => '',
@@ -95,19 +84,8 @@ class BannerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(BannerStoreRequest $request, $id)
     {
-        $validator = Validator::make($request->all(), [
-            'name'        => 'required',
-            'image'       => 'required',
-            'publish'     => 'required',
-            'description' => 'required',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 400);
-        }
-
         Banner::findOrFail($id)->update($request->all());
 
         return response()->json([
