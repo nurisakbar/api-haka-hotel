@@ -3,53 +3,26 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use Illuminate\Http\Request;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
+use App\Http\Requests\LoginStoreRequest;
+use App\Http\Requests\RegisterStoreRequest;
 
 class AuthController extends Controller
 {
-    public function login(Request $request)
+    public function login(LoginStoreRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            'phone' => 'required|numeric',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 400);
-        }
-
         $phone = $request->only('phone');
+        $user  = User::where('phone', $phone)->firstOrfail();
+        $token = JWTAuth::fromUser($user);
 
-        $user = User::where('phone', $phone)->first();
-        if ($user) {
-            $token = JWTAuth::fromUser($user);
-            return response()->json(compact('token'), 200);
-        } else {
-            return response()->json([
-                'message' => 'Login failed!',
-            ], 401);
-        }
+        return response()->json(compact('token'), 200);
     }
 
-    public function register(Request $request)
+    public function register(RegisterStoreRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'phone' => 'required|numeric',
-            'password' => 'required|string|min:6|confirmed',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 400);
-        }
-
-        $user = User::create([
-            'name' => $request->name,
-            'phone' => $request->phone,
-            'password' => Hash::make($request->get('password')),
-        ]);
+        $request['password'] = Hash::make($request->get('password'));
+        $user = User::create($request->all());
 
         return response()->json([
             'message' => 'User has been created',
