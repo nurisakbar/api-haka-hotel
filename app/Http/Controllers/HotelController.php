@@ -18,7 +18,7 @@ class HotelController extends Controller
     public function index(Request $request)
     {
         $hotel = Hotel::with('regency');
-        $paginate = 10;
+        $perPage = 10;
         if ($request->has('name')) {
             $hotel->where('name', 'like', "%" . $request->name . "%");
             $hotel->orWhere('address_tag', 'like', "%" . $request->name . "%");
@@ -29,9 +29,9 @@ class HotelController extends Controller
         }
 
         if ($request->has('paginate')) {
-            $paginate = $request->paginate;
+            $perPage = $request->paginate;
         }
-        return HotelResource::collection($hotel->paginate($paginate));
+        return HotelResource::collection($hotel->paginate($perPage));
     }
 
     /**
