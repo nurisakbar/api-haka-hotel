@@ -42,6 +42,19 @@ class HotelController extends Controller
      */
     public function store(HotelStoreRequest $request)
     {
+        if ($request->hasFile('photos')) {
+            $data = [];
+            foreach ($request->file('photos') as $file) {
+                $filenameWithext = $file->getClientOriginalName();
+                $filename = pathinfo($filenameWithext, PATHINFO_FILENAME);
+                $extension = $file->extension();
+                $fileNameSimpan = $filename . '_' . time() . ".$extension";
+                $path = $file->storeAs('public/images/hotel', $fileNameSimpan);
+                $data = $fileNameSimpan;
+                return $path;
+            }
+        }
+
         $stored = Hotel::create($request->all());
 
         return response()->json([
