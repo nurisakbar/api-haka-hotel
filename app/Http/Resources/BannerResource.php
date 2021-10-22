@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class BannerResource extends JsonResource
@@ -17,7 +18,7 @@ class BannerResource extends JsonResource
         return [
             'id'            =>  $this->id,
             'name'          =>  $this->name,
-            'image'         =>  $this->image,
+            'image'         =>  Storage::url($this->image),
             'publish'       =>  $this->publish,
             'description'   =>  $this->description,
         ];
