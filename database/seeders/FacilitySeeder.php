@@ -15,9 +15,11 @@ class FacilitySeeder extends Seeder
     public function run()
     {
         $facilities = [
-            ['name'=>'Air Conditioner'],
-            ['name'=>'Free Wifi'],
-            ['name'=>'TV Satelite']
+            ['name'=>'Air Conditioner','image'=>'ac.png'],
+            ['name'=>'Free Wifi','image'=>'wifi.png'],
+            ['name'=>'TV Satelite','image'=>'tv.png']
         ];
+
+        Facility::insert($facilities);
     }
 }
