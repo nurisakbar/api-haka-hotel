@@ -25,7 +25,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // Route for login & register
 Route::post('login', [AuthController::class, 'login']);
 Route::post('register', [AuthController::class, 'register']);
-
 Route::resource('hotel', HotelController::class);
+// Route for login & register
+Route::post('login', [AuthController::class, 'login']);
+Route::post('register', [AuthController::class, 'register']);
 Route::resource('banner', BannerController::class);
 Route::resource('regency', RegencyController::class);
