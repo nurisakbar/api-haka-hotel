@@ -25,7 +25,7 @@ class BannerStoreRequest extends FormRequest
     {
         return [
             'name'        => 'required',
-            'image'       => 'required',
+            'image'       => 'required|mimes:jpg,png',
             'publish'     => 'required',
             'description' => 'required',
         ];

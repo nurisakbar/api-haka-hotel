@@ -17,12 +17,12 @@ class BannerController extends Controller
      */
     public function index(Request $request)
     {
-        $paginate = 10;
+        $perPage = 10;
 
         if ($request->has('paginate')) {
-            $paginate = $request->paginate;
+            $perPage = $request->paginate;
         }
-        return BannerResource::collection(Banner::paginate($paginate));
+        return BannerResource::collection(Banner::paginate($perPage));
     }
 
     /**
@@ -33,18 +33,20 @@ class BannerController extends Controller
      */
     public function store(BannerStoreRequest $request)
     {
+        if ($request->hasFile('image')) {
+            $filnameWithext = $request->file('image')->getClientOriginalName();
+            $filename = pathinfo($filnameWithext, PATHINFO_FILENAME);
+            $extension = $request->file('image')->extension();
+            $fileNameSimpan = $filename . '_' . time() . ".$extension";
+            $path = $request->file('image')->storeAs('public/images', $fileNameSimpan);
+        }
+
         $stored = Banner::create([
             'name' => $request->name,
-            'image' => '',
+            'image' => $path,
             'publish' => 0,
             'description' => $request->description
         ]);
-
-        if ($request->hasFile('image')) {
-            $path = Storage::disk('local')->put($request->file('image')->getClientOriginalName(), $request->file('image')->get());
-            $path = $request->file('image')->store('images/');
-            Banner::findOrFail($stored->id)->update(['image' => $path]);
-        }
 
         return response()->json([
             'message' => 'Banner has been created',
@@ -61,20 +63,6 @@ class BannerController extends Controller
     {
         $banner = Banner::findOrFail($id);
         return new BannerResource($banner);
-    }
-
-    /**
-     * edit the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        $banner = Banner::findOrFail($id);
-        return response()->json([
-            'data' => $banner
-        ]);
     }
 
     /**
@@ -102,7 +90,9 @@ class BannerController extends Controller
     public function destroy($id)
     {
         $banner = Banner::findOrFail($id);
+        Storage::delete($banner->image);
         $banner->delete();
+
         return response()->json(['message' => 'Delete Success', 'success' => true], 200);
     }
 }
