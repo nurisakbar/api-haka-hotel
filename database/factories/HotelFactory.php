@@ -24,7 +24,7 @@ class HotelFactory extends Factory
     {
         $regency   = DB::table('regencies')->inRandomOrder()->first();
         $photos     = ['image1.jpg','images2.jpg','image4.jpg'];
-        
+
         return [
             'name'          =>  'Hotel '.$this->faker->sentence($nbWords = 4, $variableNbWords = true),
             'address'       =>  $this->faker->address(),

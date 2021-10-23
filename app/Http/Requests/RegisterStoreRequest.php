@@ -25,8 +25,8 @@ class RegisterStoreRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:255',
-            'phone' => 'required|numeric',
-            'password' => 'required|string|min:6|confirmed',
+            'phone' => 'required|numeric|unique:users,phone',
+            'password' => 'required|string|min:6',
         ];
     }
 }

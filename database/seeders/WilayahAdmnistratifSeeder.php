@@ -22,7 +22,7 @@ class WilayahAdmnistratifSeeder extends Seeder
             'port' => env('DB_PORT'),
             'database' => env('DB_DATABASE')
         ];
-        
+
         exec("mysql --user={$db['username']} --password={$db['password']} --port={$db['port']} --host={$db['host']} --database {$db['database']} < $sql");
 
         // DB::statement("DROP VIEW IF EXISTS view_wilayah_administratif_indonesia");
