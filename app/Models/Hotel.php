@@ -10,7 +10,14 @@ use App\Models\HotelFacility;
 class Hotel extends Model
 {
     use HasFactory;
-    protected $fillable = ['name', 'address', 'address_tag', 'district_id', 'photos'];
+
+    protected $fillable = [
+        'name',
+        'address',
+        'address_tag',
+        'regency_id',
+        'photos'
+    ];
 
     public function regency()
     {

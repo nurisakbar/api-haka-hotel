@@ -17,8 +17,8 @@ class HotelController extends Controller
      */
     public function index(Request $request)
     {
-        $hotel = Hotel::with('regency');
         $perPage = 10;
+        $hotel = Hotel::with('regency');
         if ($request->has('name')) {
             $hotel->where('name', 'like', "%" . $request->name . "%");
             $hotel->orWhere('address_tag', 'like', "%" . $request->name . "%");
@@ -42,11 +42,23 @@ class HotelController extends Controller
      */
     public function store(HotelStoreRequest $request)
     {
-        $stored = Hotel::create($request->all());
+        $photos = [];
+        if ($request->hasFile('photo')) {
+            foreach ($request->file('photo') as $file) {
+                $fileName = str_replace(' ', '', $file->getClientOriginalName());
+                $path = $file->storeAs('public/images/hotel', $fileName);
+                $photos[] = $fileName;
+            }
+        }
+        $request['photos']  = serialize($photos);
+        $hotel              = Hotel::create($request->all());
 
-        return response()->json([
-            'message' => 'New hotel has been created.',
-        ], 201);
+        $response           = [
+            'success'   =>  true,
+            'message'   =>  'a new hotel has added',
+            'data'      =>  new HotelResource($hotel)
+        ];
+        return response()->json($response, 201);
     }
 
     /**
@@ -58,21 +70,12 @@ class HotelController extends Controller
     public function show($id)
     {
         $hotel = Hotel::with('regency', 'hotelFacility.facility')->findOrFail($id);
-        return new HotelResource($hotel);
-    }
-
-    /**
-     * Edit the specified resource in storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        $hotel = Hotel::findOrFail($id);
-        return response()->json([
-            'data' => $hotel
-        ], 200);
+        $response = [
+            'success'   =>  true,
+            'message'   => 'hotel data',
+            'data'      =>  new HotelResource($hotel)
+        ];
+        return response()->json($response, 200);
     }
 
     /**
