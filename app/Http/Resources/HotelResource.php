@@ -17,7 +17,7 @@ class HotelResource extends JsonResource
     {
         if ($this->photos) {
             $photos = collect(unserialize($this->photos))->map(function ($photo) {
-                return url('/hotel_photos/' . $photo);
+                return url('/storage/images/hotel/' . $photo);
             });
         } else {
             $photos = [];
