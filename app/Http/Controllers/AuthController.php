@@ -31,7 +31,7 @@ class AuthController extends Controller
         $user = User::create($request->all());
 
         return response()->json([
-            'success'=>true,
+            'success' => true,
             'message' => 'User has been created',
             'user'    => new UserResource($user),
             'token'     => JWTAuth::fromUser($user)

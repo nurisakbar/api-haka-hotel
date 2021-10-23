@@ -17,7 +17,7 @@ class RegencyController extends Controller
         $regency = Regency::with('province');
 
         if ($request->has('name')) {
-            $regency->where('name', 'like', "%".$request->name."%");
+            $regency->where('name', 'like', "%" . $request->name . "%");
         }
 
         return response()->json($regency->get(), 200);

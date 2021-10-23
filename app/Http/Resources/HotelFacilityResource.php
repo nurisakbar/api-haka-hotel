@@ -16,7 +16,7 @@ class HotelFacilityResource extends JsonResource
     {
         return [
             'facility'  => $this->facility->name,
-            'image'     => asset('facility/'.$this->facility->image),
+            'image'     => asset('facility/' . $this->facility->image),
         ];
     }
 }
