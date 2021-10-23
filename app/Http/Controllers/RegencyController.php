@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Regency;
+use App\Http\Resources\RegencyResource;
 
 class RegencyController extends Controller
 {
@@ -19,7 +20,11 @@ class RegencyController extends Controller
         if ($request->has('name')) {
             $regency->where('name', 'like', "%" . $request->name . "%");
         }
-
-        return response()->json($regency->get(), 200);
+        $response = [
+            'success'   =>  true,
+            'message'   => 'regencies data',
+            'data'      =>  RegencyResource::collection($regency->paginate(34))
+        ];
+        return response()->json($response, 200);
     }
 }
