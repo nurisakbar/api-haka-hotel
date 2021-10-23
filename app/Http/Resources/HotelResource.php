@@ -4,6 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 use App\Http\Resources\HotelFacilityResource;
+use App\Http\Resources\RegencyResource;
 
 class HotelResource extends JsonResource
 {
@@ -28,7 +29,7 @@ class HotelResource extends JsonResource
             'address'       =>  $this->address,
             'address_tag'   =>  explode(',', $this->address_tag),
             'photos'        =>  $photos,
-            'districts'     =>  $this->regency,
+            'regency'       =>  new RegencyResource($this->regency),
             'facility'      => HotelFacilityResource::collection($this->hotelFacility)
         ];
     }

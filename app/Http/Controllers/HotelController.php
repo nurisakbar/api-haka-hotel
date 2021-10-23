@@ -24,8 +24,8 @@ class HotelController extends Controller
             $hotel->orWhere('address_tag', 'like', "%" . $request->name . "%");
         }
 
-        if ($request->has('district')) {
-            $hotel->where('district_id', $request->district);
+        if ($request->has('regency')) {
+            $hotel->where('regency_id', $request->regency);
         }
 
         if ($request->has('paginate')) {
