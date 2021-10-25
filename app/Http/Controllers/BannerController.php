@@ -22,7 +22,14 @@ class BannerController extends Controller
         if ($request->has('paginate')) {
             $perPage = $request->paginate;
         }
-        return BannerResource::collection(Banner::paginate($perPage));
+
+        $response = [
+            'success' => true,
+            'message' => 'all data banner',
+            'data'    => BannerResource::collection(Banner::paginate($perPage))
+        ];
+
+        return response()->json($response, 200);
     }
 
     /**
@@ -41,16 +48,20 @@ class BannerController extends Controller
             $path = $request->file('image')->storeAs('public/images', $fileNameSimpan);
         }
 
-        $stored = Banner::create([
+        $banner = Banner::create([
             'name' => $request->name,
             'image' => $path,
             'publish' => 0,
             'description' => $request->description
         ]);
 
-        return response()->json([
-            'message' => 'Banner has been created',
-        ], 201);
+        $response = [
+            'success' => true,
+            'message' => 'a new banner has been added.',
+            'data'    => new BannerResource($banner)
+        ];
+
+        return response()->json($response, 201);
     }
 
     /**
@@ -62,7 +73,13 @@ class BannerController extends Controller
     public function show($id)
     {
         $banner = Banner::findOrFail($id);
-        return new BannerResource($banner);
+        $response = [
+            'success' => true,
+            'message' => 'data banner',
+            'data'    => new BannerResource($banner)
+        ];
+
+        return response()->json($response, 200);
     }
 
     /**
@@ -72,13 +89,19 @@ class BannerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(BannerStoreRequest $request, $id)
+    public function update(Request $request, $id)
     {
+        // Update banner
         Banner::findOrFail($id)->update($request->all());
-
-        return response()->json([
+        // Get banner after updated
+        $banner = Banner::findOrFail($id);
+        $response = [
+            'success' => true,
             'message' => 'Banner has been updated',
-        ], 201);
+            'data'    => new BannerResource($banner)
+        ];
+
+        return response()->json($response, 200);
     }
 
     /**
@@ -91,8 +114,14 @@ class BannerController extends Controller
     {
         $banner = Banner::findOrFail($id);
         Storage::delete($banner->image);
+
+        $response = [
+            'success' => true,
+            'message' => 'Banner has been deleted',
+            'data' => new BannerResource($banner)
+        ];
         $banner->delete();
 
-        return response()->json(['message' => 'Delete Success', 'success' => true], 200);
+        return response()->json($response, 200);
     }
 }
