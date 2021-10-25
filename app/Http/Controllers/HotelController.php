@@ -6,7 +6,6 @@ use App\Http\Requests\HotelStoreRequest;
 use Illuminate\Http\Request;
 use App\Models\Hotel;
 use App\Http\Resources\HotelResource;
-use Illuminate\Support\Facades\Validator;
 
 class HotelController extends Controller
 {
@@ -31,7 +30,14 @@ class HotelController extends Controller
         if ($request->has('paginate')) {
             $perPage = $request->paginate;
         }
-        return HotelResource::collection($hotel->paginate($perPage));
+
+        $response = [
+            'success' => true,
+            'message' => 'all data hotel',
+            'data'    => HotelResource::collection($hotel->paginate($perPage))
+        ];
+
+        return response()->json($response, 200);
     }
 
     /**
@@ -58,6 +64,7 @@ class HotelController extends Controller
             'message'   =>  'a new hotel has added',
             'data'      =>  new HotelResource($hotel)
         ];
+
         return response()->json($response, 201);
     }
 
@@ -75,6 +82,7 @@ class HotelController extends Controller
             'message'   => 'hotel data',
             'data'      =>  new HotelResource($hotel)
         ];
+
         return response()->json($response, 200);
     }
 
@@ -85,25 +93,19 @@ class HotelController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(HotelStoreRequest $request, $id)
     {
-        $validator = Validator::make($request->all(), [
-            'name'        => 'required',
-            'address'     => 'required',
-            'address_tag' => 'required',
-            'district_id' => 'required|numeric',
-            'photos'      => 'required'
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json($validator->errors(), 400);
-        }
-
+        // Update hotel
         Hotel::findOrFail($id)->update($request->all());
-
-        return response()->json([
+        // Get hotel after updated
+        $hotel = Hotel::findOrFail($id);
+        $response = [
+            'success' => true,
             'message' => 'Hotel has been updated.',
-        ], 201);
+            'data'    => new HotelResource($hotel)
+        ];
+
+        return response()->json($response, 200);
     }
 
     /**
@@ -115,6 +117,13 @@ class HotelController extends Controller
     public function destroy($id)
     {
         $hotel = Hotel::findOrFail($id);
-        return response()->json(['message' => 'Delete Success', 'success' => true], 200);
+        $response = [
+            'success' => true,
+            'message' => 'Hotel has been deleted.',
+            'data' => new HotelResource($hotel)
+        ];
+        $hotel->delete();
+
+        return response()->json($response, 200);
     }
 }
