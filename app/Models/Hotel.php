@@ -28,4 +28,16 @@ class Hotel extends Model
     {
         return $this->hasMany(HotelFacility::class);
     }
+
+    public function getAddressTagAttribute($value)
+    {
+        return explode(',', $value);
+    }
+
+    public function getPhotosAttribute($value)
+    {
+        return collect(unserialize($value))->map(function ($photo) {
+            return url('/storage/images/hotel/' . $photo);
+        });
+    }
 }

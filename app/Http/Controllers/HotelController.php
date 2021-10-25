@@ -26,10 +26,17 @@ class HotelController extends Controller
         if ($request->has('regency')) {
             $hotel->where('regency_id', $request->regency);
         }
+        
+        if ($request->has('type') == 'datatables') {
+            return \DataTables::of($hotel->get())
+            ->addIndexColumn()
+            ->make(true);
+        }
 
         if ($request->has('paginate')) {
             $perPage = $request->paginate;
         }
+
 
         $response = [
             'success' => true,
@@ -38,6 +45,7 @@ class HotelController extends Controller
         ];
 
         return response()->json($response, 200);
+
     }
 
     /**
