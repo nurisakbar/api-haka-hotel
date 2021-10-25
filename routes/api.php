@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HotelController;
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\RegencyController;
+use App\Http\Controllers\HotelFacilityController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,3 +30,7 @@ Route::post('register', [AuthController::class, 'register']);
 Route::resource('hotel', HotelController::class);
 Route::resource('banner', BannerController::class);
 Route::resource('regency', RegencyController::class);
+
+// Route for hotel facility
+Route::post('hotel/facility', [HotelFacilityController::class, 'store']);
+Route::delete('hotel/facility/{id}', [HotelFacilityController::class, 'destroy']);
