@@ -17,9 +17,16 @@ class BookingController extends Controller
     public function index(Request $request)
     {
         $perPage = 10;
+        $booking = Booking::with(['user', 'roomType']);
 
         if ($request->has('paginate')) {
             $perPage = $request->paginate;
+        }
+
+        if ($request->has('type') == 'datatables') {
+            return \DataTables::of($booking->get())
+                ->addIndexColumn()
+                ->make(true);
         }
 
         $response = [
