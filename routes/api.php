@@ -7,6 +7,7 @@ use App\Http\Controllers\HotelController;
 use App\Http\Controllers\BannerController;
 use App\Http\Controllers\RegencyController;
 use App\Http\Controllers\HotelFacilityController;
+use App\Http\Controllers\RoomTypeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,3 +35,10 @@ Route::resource('regency', RegencyController::class);
 // Route for hotel facility
 Route::post('hotel/facility', [HotelFacilityController::class, 'store']);
 Route::delete('hotel/facility/{id}', [HotelFacilityController::class, 'destroy']);
+
+// Route for room type
+Route::get('hotel/{id}/roomtype', [RoomTypeController::class, 'index']);
+Route::get('hotel/{idHotel}/roomtype/{idRoom}', [RoomTypeController::class, 'show']);
+Route::put('hotel/{idHotel}/roomtype/{idRoom}', [RoomTypeController::class, 'update']);
+Route::delete('hotel/{idHotel}/roomtype/{idRoom}', [RoomTypeController::class, 'destroy']);
+Route::post('hotel/{id}/roomtype', [RoomTypeController::class, 'store']);
