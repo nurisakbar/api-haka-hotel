@@ -73,7 +73,7 @@ class RoomTypeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($idHotel, $idRoom)
+    public function show($idHotel, $idRoom)
     {
         $roomType = RoomType::with('hotel')->where('id', $idRoom)->where('hotel_id', $idHotel)->first();
 

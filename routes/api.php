@@ -38,7 +38,7 @@ Route::delete('hotel/facility/{id}', [HotelFacilityController::class, 'destroy']
 
 // Route for room type
 Route::get('hotel/{id}/roomtype', [RoomTypeController::class, 'index']);
-Route::get('hotel/{idHotel}/roomtype/{idRoom}', [RoomTypeController::class, 'edit']);
+Route::get('hotel/{idHotel}/roomtype/{idRoom}', [RoomTypeController::class, 'show']);
 Route::put('hotel/{idHotel}/roomtype/{idRoom}', [RoomTypeController::class, 'update']);
 Route::delete('hotel/{idHotel}/roomtype/{idRoom}', [RoomTypeController::class, 'destroy']);
 Route::post('hotel/{id}/roomtype', [RoomTypeController::class, 'store']);
