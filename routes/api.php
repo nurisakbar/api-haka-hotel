@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\HotelController;
 use App\Http\Controllers\BannerController;
+use App\Http\Controllers\BookingController;
 use App\Http\Controllers\RegencyController;
 use App\Http\Controllers\HotelFacilityController;
 use App\Http\Controllers\RoomTypeController;
@@ -42,3 +43,7 @@ Route::get('hotel/{idHotel}/roomtype/{idRoom}', [RoomTypeController::class, 'sho
 Route::put('hotel/{idHotel}/roomtype/{idRoom}', [RoomTypeController::class, 'update']);
 Route::delete('hotel/{idHotel}/roomtype/{idRoom}', [RoomTypeController::class, 'destroy']);
 Route::post('hotel/{id}/roomtype', [RoomTypeController::class, 'store']);
+
+// Route for booking hotel
+Route::get('booking', [BookingController::class, 'index']);
+Route::post('booking', [BookingController::class, 'store']);
