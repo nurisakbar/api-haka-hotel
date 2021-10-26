@@ -13,7 +13,7 @@
         "laravel/tinker": "^2.5",
         "squizlabs/php_codesniffer": "^3.6",
         "tymon/jwt-auth": "dev-develop",
-        "yajra/laravel-datatables-oracle": "^9.18"
+        "yajra/laravel-datatables-oracle": "~9.0"
     },
     "require-dev": {
         "facade/ignition": "^2.5",
