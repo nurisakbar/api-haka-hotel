@@ -11,6 +11,7 @@
         "laravel/framework": "^8.54",
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
+        "laravelcollective/html": "^6.2",
         "squizlabs/php_codesniffer": "^3.6",
         "tymon/jwt-auth": "dev-develop",
         "yajra/laravel-datatables-oracle": "^9.18"
