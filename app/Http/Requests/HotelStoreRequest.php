@@ -27,8 +27,8 @@ class HotelStoreRequest extends FormRequest
             'name'        => 'required',
             'address'     => 'required',
             'address_tag' => 'required',
-            'regency_id' => 'required|numeric|exists:regencies,id',
-            'photo'       => 'required'
+            'regency_id'  => 'required|numeric|exists:regencies,id',
+            'photos'      => 'required|mimes:jpg,png'
         ];
     }
 }
