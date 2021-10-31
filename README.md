@@ -1,5 +1,5 @@
 API untuk aplikasi mobile pemesanan hotel.<br>
-Demo URL : http://agogo.nurisakbar.com
+Demo URL : http://haka-api.nurisakbar.com/
 
 
 - [ ] login
