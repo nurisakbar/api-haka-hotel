@@ -48,4 +48,4 @@ Route::post('hotel/{id}/roomtype', [RoomTypeController::class, 'store']);
 
 // Route for booking hotel
 Route::get('booking', [BookingController::class, 'index']);
-Route::post('booking', [BookingController::class, 'store']);
+Route::post('booking', [BookingController::class, 'store'])->middleware('jwt.auth');
