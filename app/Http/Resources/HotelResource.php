@@ -30,7 +30,7 @@ class HotelResource extends JsonResource
             'name'          =>  $this->name,
             'address'       =>  $this->address,
             'address_tag'   =>  $this->address_tag,
-            'photos'        =>  $this->photos,
+            // 'photos'        =>  $this->photos,
             'regency'       =>  new RegencyResource($this->regency),
             'facility'      => HotelFacilityResource::collection($this->hotelFacility)
         ];

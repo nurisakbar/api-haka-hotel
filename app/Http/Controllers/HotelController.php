@@ -26,11 +26,18 @@ class HotelController extends Controller
         if ($request->has('regency')) {
             $hotel->where('regency_id', $request->regency);
         }
-        
+
         if ($request->has('type') == 'datatables') {
             return \DataTables::of($hotel->get())
-            ->addIndexColumn()
-            ->make(true);
+                ->addColumn('action', function ($data) {
+                    $btn = '<a class="btn btn-primary btn-sm" href="/hotel/' . $data->id . '/edit"><i class="fas fa-edit" aria-hidden="true"></i></a>';
+                    $btn .= '<a class="btn btn-success btn-sm mx-1" href="/hotel/' . $data->id . '"><i class="fas fa-eye" aria-hidden="true"></i></a>';
+                    $btn .= '<a class="btn btn-danger btn-sm" href="/hotel/' . $data->id . '/delete"><i class="fas fa-trash" aria-hidden="true"></i></a>';
+                    return $btn;
+                })
+                ->rawColumns(['action'])
+                ->addIndexColumn()
+                ->make(true);
         }
 
         if ($request->has('paginate')) {
@@ -45,7 +52,6 @@ class HotelController extends Controller
         ];
 
         return response()->json($response, 200);
-
     }
 
     /**
@@ -54,17 +60,18 @@ class HotelController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(HotelStoreRequest $request)
+    public function store(Request $request)
     {
         $photos = [];
-        if ($request->hasFile('photo')) {
-            foreach ($request->file('photo') as $file) {
+        if ($request->hasFile('photos')) {
+            $files = $request->file('photos');
+            foreach ($files as $file) {
                 $fileName = str_replace(' ', '', $file->getClientOriginalName());
                 $path = $file->storeAs('public/images/hotel', $fileName);
-                $photos[] = $fileName;
+                array_push($photos, $fileName);
             }
+            $request['photos']  = serialize($photos);
         }
-        $request['photos']  = serialize($photos);
         $hotel              = Hotel::create($request->all());
 
         $response           = [
