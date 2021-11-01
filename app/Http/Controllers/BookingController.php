@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Booking;
 use Illuminate\Http\Request;
-use Tymon\JWTAuth\Facades\JWTAuth;
 use App\Http\Resources\BookingResource;
 
 class BookingController extends Controller
@@ -46,14 +45,6 @@ class BookingController extends Controller
      */
     public function store(Request $request)
     {
-        if (!$token = JWTAuth::parseToken()) {
-            $response = [
-                'success' => false,
-                'message' => 'Invalid Token'
-            ];
-            return response()->json($response, 400);
-        }
-
         $booking = Booking::create($request->all());
         $response = [
             'success' => true,
