@@ -25,11 +25,11 @@ class FacilityController extends Controller
         $facilites = Facility::paginate($perPage);
 
         if ($request->has('type') == 'datatables') {
-            return \DataTables::of($facilites)
+            return \DataTables::of(Facility::all())
                 ->addColumn('action', function ($data) {
-                    $btn = '<a class="btn btn-primary btn-sm" href="/hotel/' . $data->id . '/edit"><i class="fas fa-edit" aria-hidden="true"></i></a>';
-                    $btn .= '<a class="btn btn-success btn-sm mx-1" href="/hotel/' . $data->id . '"><i class="fas fa-eye" aria-hidden="true"></i></a>';
-                    $btn .= '<a class="btn btn-danger btn-sm" href="/hotel/' . $data->id . '/delete"><i class="fas fa-trash" aria-hidden="true"></i></a>';
+                    $btn = '<a class="btn btn-primary btn-sm" href="/facilities/' . $data->id . '/edit"><i class="fas fa-edit" aria-hidden="true"></i></a>';
+                    $btn .= '<a class="btn btn-success btn-sm mx-1" href="/facilities/' . $data->id . '"><i class="fas fa-eye" aria-hidden="true"></i></a>';
+                    $btn .= '<a class="btn btn-danger btn-sm" href="/facilities/' . $data->id . '/delete"><i class="fas fa-trash" aria-hidden="true"></i></a>';
                     return $btn;
                 })
                 ->rawColumns(['action'])
