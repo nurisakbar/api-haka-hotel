@@ -28,7 +28,7 @@ class RoomTypeStoreRequest extends FormRequest
             'name'         => 'required',
             'price'        => 'required|numeric',
             'description'  => 'required',
-            'images'       => 'required|mimes:jpg,png'
+            'images'       => 'mimes:jpg,png'
         ];
     }
 }

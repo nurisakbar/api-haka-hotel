@@ -14,22 +14,23 @@ class RoomTypeResource extends JsonResource
      */
     public function toArray($request)
     {
-        if ($this->images) {
-            $images = collect(unserialize($this->images))->map(function ($photo) {
-                return url('/storage/images/hotel/room-type' . $photo);
-            });
-        } else {
-            $images = [];
-        }
+        // if ($this->images) {
+        //     $images = collect(unserialize($this->images))->map(function ($photo) {
+        //         return url('/storage/images/hotel/room-type' . $photo);
+        //     });
+        // } else {
+        //     $images = [];
+        // }
 
 
         return [
             'id'            =>  $this->id,
+            'hotel_id'      =>  $this->hotel->id,
             'hotel'         =>  $this->hotel->name,
             'name'          =>  $this->name,
             'price'         =>  $this->price,
             'description'   =>  $this->description,
-            'images'        =>  $images,
+            'images'        =>  $this->images,
         ];
     }
 }

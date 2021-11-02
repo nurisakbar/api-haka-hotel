@@ -14,13 +14,23 @@ class RoomTypeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index(Request $request, $idHotel = null)
     {
         $perPage = 10;
         $roomType = RoomType::with('hotel');
 
         if ($request->has('type') == 'datatables') {
-            return \DataTables::of($roomType->get())
+            return \DataTables::of($roomType->where('hotel_id', $idHotel)->get())
+                ->addColumn('action', function ($data) {
+                    $btn = '<a class="btn btn-primary btn-sm" href="/hotel/' . $data->hotel_id . '/roomtype/' . $data->id . '/edit"><i class="fas fa-edit" aria-hidden="true"></i></a>';
+                    $btn .= '<a class="btn btn-success btn-sm mx-1" href="/hotel/' . $data->hotel_id . '/roomtype/' . $data->id . '"><i class="fas fa-eye" aria-hidden="true"></i></a>';
+                    $btn .= '<a class="btn btn-danger btn-sm" href="/hotel/' . $data->hotel_id . '/roomtype/' . $data->id . '/delete"><i class="fas fa-trash" aria-hidden="true"></i></a>';
+                    return $btn;
+                })
+                ->addColumn('price', function ($data) {
+                    return 'Rp. ' . number_format($data->price);
+                })
+                ->rawColumns(['action'])
                 ->addIndexColumn()
                 ->make(true);
         }
@@ -48,11 +58,11 @@ class RoomTypeController extends Controller
     public function store(RoomTypeStoreRequest $request)
     {
         $images = [];
-        if ($request->hasFile('images')) {
-            foreach ($request->file('images') as $file) {
+        if ($request->hasFile('image')) {
+            foreach ($request->file('image') as $file) {
                 $name = $file->getClientOriginalName();
                 $file->storeAs('public/images/hotel/room-type', $name);
-                $images = $name;
+                array_push($images, $name);
             }
         }
         $request['images']  = serialize($images);

@@ -40,6 +40,17 @@ class HotelController extends Controller
                 ->make(true);
         }
 
+        if ($request->has('room') == 'type') {
+            return \DataTables::of($hotel->get())
+                ->addColumn('action', function ($data) {
+                    $btn = '<a class="btn btn-success btn-sm mx-1" href="/hotel/' . $data->id . '/roomType"><i class="fas fa-eye" aria-hidden="true"></i></a>';
+                    return $btn;
+                })
+                ->rawColumns(['action'])
+                ->addIndexColumn()
+                ->make(true);
+        }
+
         if ($request->has('paginate')) {
             $perPage = $request->paginate;
         }
