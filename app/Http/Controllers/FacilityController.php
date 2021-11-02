@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\HotelStoreRequest;
+use App\Models\Facility;
 use Illuminate\Http\Request;
-use App\Models\Hotel;
-use App\Http\Resources\HotelResource;
+use App\Http\Resources\FacilityResource;
+use App\Http\Requests\FacilityStoreRequest;
 
-class HotelController extends Controller
+class FacilityController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,18 +17,15 @@ class HotelController extends Controller
     public function index(Request $request)
     {
         $perPage = 10;
-        $hotel = Hotel::with('regency');
-        if ($request->has('name')) {
-            $hotel->where('name', 'like', "%" . $request->name . "%");
-            $hotel->orWhere('address_tag', 'like', "%" . $request->name . "%");
+
+        if ($request->has('paginate')) {
+            $perPage = $request->paginate;
         }
 
-        if ($request->has('regency')) {
-            $hotel->where('regency_id', $request->regency);
-        }
+        $facilites = Facility::paginate($perPage);
 
         if ($request->has('type') == 'datatables') {
-            return \DataTables::of($hotel->get())
+            return \DataTables::of($facilites)
                 ->addColumn('action', function ($data) {
                     $btn = '<a class="btn btn-primary btn-sm" href="/hotel/' . $data->id . '/edit"><i class="fas fa-edit" aria-hidden="true"></i></a>';
                     $btn .= '<a class="btn btn-success btn-sm mx-1" href="/hotel/' . $data->id . '"><i class="fas fa-eye" aria-hidden="true"></i></a>';
@@ -40,15 +37,10 @@ class HotelController extends Controller
                 ->make(true);
         }
 
-        if ($request->has('paginate')) {
-            $perPage = $request->paginate;
-        }
-
-
         $response = [
             'success' => true,
-            'message' => 'all data hotel',
-            'data'    => HotelResource::collection($hotel->paginate($perPage))
+            'message' => 'all data facility',
+            'data'    => FacilityResource::collection($facilites)
         ];
 
         return response()->json($response, 200);
@@ -60,24 +52,21 @@ class HotelController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(FacilityStoreRequest $request)
     {
-        $photos = [];
-        if ($request->hasFile('photo')) {
-            $files = $request->file('photo');
-            foreach ($files as $file) {
-                $fileName = str_replace(' ', '', $file->getClientOriginalName());
-                $path = $file->storeAs('public/images/hotel', $fileName);
-                array_push($photos, $fileName);
-            }
-            $request['photos']  = serialize($photos);
+        if ($request->hasFile('images')) {
+            $file = $request->file('images');
+            $fileName = str_replace(' ', '', $file->getClientOriginalName());
+            $path = $file->storeAs('public/images/facility', $fileName);
         }
-        $hotel              = Hotel::create($request->all());
+
+        $request['image'] = $fileName;
+        $facility        = Facility::create($request->all());
 
         $response           = [
             'success'   =>  true,
-            'message'   =>  'a new hotel has added',
-            'data'      =>  new HotelResource($hotel)
+            'message'   =>  'a new facility has added',
+            'data'      =>  new FacilityResource($facility)
         ];
 
         return response()->json($response, 201);
@@ -91,11 +80,11 @@ class HotelController extends Controller
      */
     public function show($id)
     {
-        $hotel = Hotel::with('regency', 'hotelFacility.facility')->findOrFail($id);
+        $facility = Facility::findOrFail($id);
         $response = [
             'success'   =>  true,
             'message'   => 'hotel data',
-            'data'      =>  new HotelResource($hotel)
+            'data'      =>  new FacilityResource($facility)
         ];
 
         return response()->json($response, 200);
@@ -108,16 +97,16 @@ class HotelController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(HotelStoreRequest $request, $id)
+    public function update(FacilityStoreRequest $request, $id)
     {
-        // Update hotel
-        Hotel::findOrFail($id)->update($request->all());
-        // Get hotel after updated
-        $hotel = Hotel::findOrFail($id);
+        // Update facility
+        Facility::findOrFail($id)->update($request->all());
+        // Get facility after updated
+        $facility = Facility::findOrFail($id);
         $response = [
             'success' => true,
-            'message' => 'Hotel has been updated.',
-            'data'    => new HotelResource($hotel)
+            'message' => 'Facility has been updated.',
+            'data'    => new FacilityResource($facility)
         ];
 
         return response()->json($response, 200);
@@ -131,13 +120,13 @@ class HotelController extends Controller
      */
     public function destroy($id)
     {
-        $hotel = Hotel::findOrFail($id);
+        $facility = Facility::findOrFail($id);
         $response = [
             'success' => true,
-            'message' => 'Hotel has been deleted.',
-            'data' => new HotelResource($hotel)
+            'message' => 'Facility has been deleted.',
+            'data' => new FacilityResource($facility)
         ];
-        $hotel->delete();
+        $facility->delete();
 
         return response()->json($response, 200);
     }

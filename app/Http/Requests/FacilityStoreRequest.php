@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class HotelStoreRequest extends FormRequest
+class FacilityStoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,10 +25,7 @@ class HotelStoreRequest extends FormRequest
     {
         return [
             'name'        => 'required',
-            'address'     => 'required',
-            'address_tag' => 'required',
-            'regency_id'  => 'required|numeric|exists:regencies,id',
-            'photos'      => 'required|mimes:jpg,png'
+            'image'       => 'image|size:2048',
         ];
     }
 }
