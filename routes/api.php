@@ -10,6 +10,7 @@ use App\Http\Controllers\FacilityController;
 use App\Http\Controllers\RegencyController;
 use App\Http\Controllers\HotelFacilityController;
 use App\Http\Controllers\RoomTypeController;
+use App\Http\Controllers\WhatsappController;
 
 /*
 |--------------------------------------------------------------------------
@@ -49,3 +50,19 @@ Route::post('hotel/{id}/roomtype', [RoomTypeController::class, 'store']);
 // Route for booking hotel
 Route::get('booking', [BookingController::class, 'index']);
 Route::post('booking', [BookingController::class, 'store'])->middleware('jwt.auth');
+
+// Route for register device
+Route::get('device', [WhatsappController::class, 'index']);
+Route::get('device/{id}', [WhatsappController::class, 'show']);
+Route::post('device', [WhatsappController::class, 'store']);
+Route::delete('device/{id}', [WhatsappController::class, 'destroy']);
+
+// Route for get QR Code
+Route::get('QRCode/{id}', [WhatsappController::class, 'getQRCode']);
+
+// Route for whatsapp message
+Route::get('message/{id}', [WhatsappController::class, 'getMessage']);
+Route::post('message', [WhatsappController::class, 'sendMessage']);
+
+// Route for verify account
+Route::post('account_verify', [AuthController::class, 'verifyAccount']);
