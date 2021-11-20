@@ -23,9 +23,9 @@ class WilayahAdmnistratifSeeder extends Seeder
             'database' => env('DB_DATABASE')
         ];
 
-        exec("mysql --user={$db['username']} --password={$db['password']} --port={$db['port']} --host={$db['host']} --database {$db['database']} < $sql");
+        //exec("mysql --user={$db['username']} --password={$db['password']} --port={$db['port']} --host={$db['host']} --database {$db['database']} < $sql");
 
-        DB::statement("DROP VIEW IF EXISTS view_wilayah_administratif_indonesia");
+        //DB::statement("DROP VIEW IF EXISTS view_wilayah_administratif_indonesia");
         DB::statement("create view view_wilayah_administratif_indonesia as SELECT
         villages.id as village_id,
         villages.name as village_name,
